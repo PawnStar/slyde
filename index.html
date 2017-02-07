@@ -3,7 +3,27 @@
   <head>
     <title>Slyde</title>
     <style>
+      @import url('https://fonts.googleapis.com/css?family=Cabin:700,700i|Raleway:400,600,400i');
+      h1{
+        font-family: 'Cabin', serif;
+      }
+      p{
+        font-family: 'Raleway', sans-serif;
+      }
+      a{
+        color: #47e447;
+        font-weight: 600;
+      }
+      #presentationFrame{
+        max-width:1000px;
+        margin-left:auto;
+        margin-right:auto;
+      }
+      span#hash{
+        font-weight:bold;
+      }
       .slide-container{
+        padding:30px;
         display:none;
       }
       #currentSlide{
@@ -17,30 +37,69 @@
   <body>
     <div id="presentationFrame">
       <div class="slide-container" id="currentSlide">
-        <h1>Slide 1</h1>
+        <h1>Welcome to Slyde</h1>
+        <p>Slyde is a web-based presentation system, using HTML and CSS for styling and Socket.io for remote control.</p>
+        <p>To see how it works, open the <a id="remoteLink" href="./remote">remote control page</a> in a new tab and enter <span id="hash">the hash in this page's url</span> if prompted.</p>
         <span class="notes">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent rutrum metus et odio rutrum sodales at eget neque. Phasellus faucibus, augue vitae varius porta, magna est vestibulum nunc, at ullamcorper lorem risus quis nisl. Nullam tempus elit ac enim mollis, et molestie erat vehicula. Duis dignissim ipsum eu pharetra molestie. Morbi in tempus diam. Curabitur finibus lobortis velit, bibendum varius lacus ultricies non. Donec a felis viverra, malesuada erat dictum, scelerisque magna. Nunc a rhoncus urna. Nam quis tellus quis velit porttitor dictum non sed sapien. Maecenas egestas dignissim dapibus. Cras sit amet blandit nisl. Curabitur viverra vehicula congue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla ac velit sed ex facilisis molestie vel vitae risus.</p>
-          <p>Suspendisse sollicitudin eleifend justo, ac interdum risus tincidunt id. Curabitur a purus porta, dictum lorem vel, varius nulla. Duis facilisis lectus nec imperdiet maximus. Phasellus accumsan, mi vitae ornare dignissim, dolor erat tincidunt erat, a ultrices justo erat eget nibh. Vivamus ultricies auctor risus, vitae dictum dui posuere et. Aenean accumsan tellus eu est elementum laoreet vel quis augue. Mauris mattis ex nec sem consequat, vel volutpat velit facilisis. Phasellus euismod dignissim sapien, eget pharetra urna convallis id. Curabitur arcu purus, finibus non ex condimentum, ullamcorper elementum justo. Donec fringilla lacus blandit, dictum massa sed, consectetur elit. Nullam ac blandit diam, ut luctus ligula. In venenatis nulla in sem pharetra, et feugiat lorem efficitur. Nunc et nulla at diam maximus laoreet.</p>
-          <p>Curabitur sit amet dignissim justo. Proin et iaculis ante. Cras quis blandit mi. Pellentesque consequat suscipit lacus nec viverra. Fusce pretium nulla et magna fringilla hendrerit. Cras vehicula finibus condimentum. Duis tristique in mi in semper. Pellentesque et molestie ex. Nulla neque orci, consectetur quis tempus in, consectetur id nisi. Sed varius elit ex, et facilisis dolor auctor a. In bibendum eros vitae sapien condimentum commodo. Praesent eget efficitur ex, vel porta augue. In mi nulla, volutpat id lacus ut, porttitor ornare urna.</p>
-          <p>Morbi imperdiet turpis a purus ultricies molestie. Fusce id cursus sem, ut cursus metus. Integer nec nisi libero. Praesent vel ultricies felis. Nulla ut viverra nulla, ut rhoncus justo. Aenean scelerisque massa vel pretium mollis. Aenean quis eros in est venenatis sollicitudin.</p>
-          <p>Maecenas eros felis, molestie ut ante sed, semper dignissim neque. Quisque nec faucibus ligula, ut eleifend tortor. Maecenas tempor urna justo, nec condimentum lorem tincidunt in. Donec accumsan diam elit, eget interdum neque pellentesque vel. Cras eu finibus orci, a rhoncus turpis. Nam a lorem id nisi commodo sodales. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut suscipit volutpat nibh, id scelerisque lectus porttitor in. Sed varius viverra vulputate. Suspendisse maximus lacinia orci vitae consequat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
+          <p>
+            Here on the remote page you can control the presentation using the
+            buttons below.  We've placed these to be most convenient on a phone
+            screen, but you can of course adjust that with your own CSS.
+          </p>
         </span>
       </div>
       <div class="slide-container">
-        <h1>Slide 2</h1>
-        <span class="notes">Notes for the second slide</span>
+        <h1>Slyde Gives You the Freedom of Code</h1>
+        <p>Because Slyde is written in HTML, you can put any sort of web content here.</p>
+        <p>No more fiddling with getting videos into your presentation, just embed the YouTube code:</p>
+        <p><iframe width="560" height="315" src="https://www.youtube.com/embed/CdWd8fUC71g" frameborder="0" allowfullscreen></iframe></p>
+        <p>It's not for everyone, but Slyde gives you the freedom, flexibility, and power of code.</p>
+        <span class="notes">
+          <p>You can also enter presenter's notes to be displayed here.</p>
+          <p>
+            Loading this up on your phone could be very convenient - control
+            the presentation <strong>and</strong> keep your notes all in
+            one place.
+          </p>
+        </span>
       </div>
       <div class="slide-container">
-        <h1>Slide 3</h1>
-        <span class="notes">Notes for the third slide</span>
+        <h1>Robust and Powerful</h1>
+        <p>
+          Slyde is built on Socket.io, which brings a light code base as well as
+          robust network error handling.  It handles disconnects and reconnects
+          well, and even allows multiple devices to control the same
+          presentation.
+        </p>
+        <span class="notes">
+          <h1>Notes are pretty flexible too</h1>
+          <p>You can also put whatever sort of formatting you want here.</p>
+          <ul>
+            <li>Like reading things as a list?</li>
+            <li>No problem.</li>
+          </ul>
+          <h3>Want to put headers in for easy skimming?</h3>
+          <p>You can do that too.</p>
+          <p>
+            Long content scrolls just like you'd expect, and the control buttons
+            are transparent to allow easy reading when they overlap with your
+            notes.
+          </p>
+        </span>
       </div>
       <div class="slide-container">
-        <h1>Slide 4</h1>
-        <span class="notes">Notes for the fourth slide</span>
+        <h1>Easy to Use</h1>
+        <p>Slyde's format is really simple.  It's just a few nested divs.</p>
+        <pre>{ Code preview coming soon . . . }</pre>
+        <span class="notes">And the notes are just a hidden span on each page.</span>
       </div>
       <div class="slide-container">
-        <h1>Slide 5</h1>
-        <span class="notes">Notes for the final slide</span>
+        <h1>Give it a try</h1>
+        <p>Slyde is completely open source.  You can mod it and patch it to your heart's content.</p>
+        <p>Check it out on <a href="https://github.com/pawnstar/slyde/">Github</a> and let us know what you think.</p>
+        <span class="notes">
+          <p style="text-align:center"><em>Fin.</em></p>
+        </span>
       </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
@@ -73,6 +132,8 @@
         socket.on('registered', function(id){
           console.log("Successfully registerd " + id);
           window.location.hash = id;
+          $('#remoteLink').attr('href', './remote' + id);
+          $('#hash').text(id);
           sendCurrentNotes(socket);
         })
 
@@ -109,11 +170,7 @@
           current.removeAttribute('id');
           current.nextElementSibling.id = selectedId;
       	}else{
-      		console.log('Returning to beginning');
-      		var all = document.getElementById(containerId).getElementsByClassName('slide-container');
-      		var first = document.getElementById(containerId).firstElementChild;
-          current.removeAttribute('id');
-      		first.id = selectedId;
+      		console.log('No next slide');
       	}
       }
 
@@ -124,11 +181,7 @@
           current.removeAttribute('id');
           current.previousElementSibling.id = selectedId;
       	}else{
-      		console.log('Jumping to end');
-      		var all = document.getElementById(containerId).getElementsByClassName('slide-container');
-      		var last = document.getElementById(containerId).lastElementChild;
-          current.removeAttribute('id');
-      		last.id = selectedId;
+      		console.log('Already at beginning');
       	}
       }
 
