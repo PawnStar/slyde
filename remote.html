@@ -4,6 +4,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Socket.IO chat</title>
     <style>
+      #warning{
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        padding:7px;
+        background: #ff5b5b;
+        text-align: center;
+        box-shadow: 1px 1px 5px #5c0000;
+      }
       #notes{
         min-height:400px;
         display:block;
@@ -11,13 +21,14 @@
         background:white;
       }
       #controls{
-        position:absolute;
-        bottom:0;
+        position:fixed;
+        top:50%;
         left:0;
         right:0;
         display:block;
         background:gray;
         text-align:center;
+        opacity:.5;
       }
       #controls a{
         display:inline-block;
@@ -26,8 +37,33 @@
         margin:10px;
         border-radius:2px;
         width:60px;
-        color:black;
+        height:60px;
+        color:transparent;
         text-decoration:none;
+        position:relative;
+        box-shadow: 0px 5px 5px black;
+      }
+      #next::before{
+        content:'';
+        border-top: solid 5px black;
+        border-right:solid 5px black;
+        position:absolute;
+        top:25%;
+        left:15%;
+        width:40%;
+        height:40%;
+        transform:rotate(45deg);
+      }
+      #prev::before{
+        content:'';
+        border-top: solid 5px black;
+        border-left:solid 5px black;
+        position:absolute;
+        top:25%;
+        right:15%;
+        width:40%;
+        height:40%;
+        transform:rotate(-45deg);
       }
     </style>
   </head>
@@ -50,6 +86,24 @@
           page = window.location.hash;
 
         //Socket stuff
+        socket.on('connect', function() {
+           console.log("connected");
+        });
+
+        socket.on('disconnect', function () {
+            console.log("disconnected");
+        });
+
+        socket.on('disconnect', function(){
+          console.log('disconnected')
+          $('#notes').prepend('<div id="warning">Connection lost . . . reconnecting.</div>');
+        })
+
+        socket.on('connect', function(){
+          if($('#warning').length)
+            $('#warning').remove();
+        })
+
         socket.on('register', function(){
           //Server wants to know where to connect us to
           if(page)

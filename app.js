@@ -41,10 +41,8 @@ io.on('connection', function(socket){
   });
 
   socket.on('update-notes', function(data){
-    console.log("Recieved updated notes for page: " + data.id);
     if(!presentations[data.id])
       return socket.emit('register');
-    console.log("They are: " + data.notes);
     presentations[data.id] = {socket: socket, notes: data.notes};
     socket.broadcast.emit('status-' + data.id, data.notes);
   })
@@ -61,12 +59,14 @@ io.on('connection', function(socket){
   })
 
   socket.on('control-next', function(id){
+    console.log("Moving " + id + " to next slide");
     if(presentations[id])
       presentations[id].socket.emit('move-next');
     else
       socket.emit('retry');
   })
   socket.on('control-prev', function(id){
+    console.log("Moving " + id + " to previous slide");
     if(presentations[id])
       presentations[id].socket.emit('move-prev');
     else
