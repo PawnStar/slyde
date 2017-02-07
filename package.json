@@ -1,0 +1,12 @@
+{
+  "name": "slyde",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "description": "Web based presentation kit with built-in remote control",
+  "dependencies": {
+    "express": "^4.14.1",
+    "socket.io": "^1.7.2"
+  }
+}

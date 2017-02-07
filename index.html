@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      .slide-container{
+        display:none;
+      }
+      #currentSlide{
+        display:block;
+      }
+      .notes{
+        display:none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="presentationFrame">
+      <div class="slide-container" id="currentSlide">
+        <h1>Slide 1</h1>
+        <span class="notes">Notes for the first slide</span>
+      </div>
+      <div class="slide-container">
+        <h1>Slide 2</h1>
+        <span class="notes">Notes for the second slide</span>
+      </div>
+      <div class="slide-container">
+        <h1>Slide 3</h1>
+        <span class="notes">Notes for the third slide</span>
+      </div>
+      <div class="slide-container">
+        <h1>Slide 4</h1>
+        <span class="notes">Notes for the fourth slide</span>
+      </div>
+      <div class="slide-container">
+        <h1>Slide 5</h1>
+        <span class="notes">Notes for the final slide</span>
+      </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      var current = null;
+      var containerId = 'presentationFrame';
+      var selectedId = 'currentSlide';
+
+      $(document).ready(function(){
+        console.log('starting')
+        var socket = io();
+        //Retry if necessary
+        socket.on('register', function(){
+          console.log('Being asked to register');
+          var key;
+          if(!window.location.hash)
+            key = getSemiRandID(6);
+          else
+            key = window.location.hash
+          console.log("Trying: " + key);
+          socket.emit('register', key);
+        })
+        socket.on('re-register', function(){
+          console.log("Being asked to register again");
+          var key = getSemiRandID(6);
+          console.log("Trying: " + key);
+          socket.emit('register', key);
+        })
+        socket.on('registered', function(id){
+          console.log("Successfully registerd " + id);
+          window.location.hash = id;
+          sendCurrentNotes(socket);
+        })
+
+        //Move forward when instructed
+        socket.on('move-next', function(){
+          transitionNext();
+          sendCurrentNotes(socket);
+        })
+
+        //Move backward when instructed
+        socket.on('move-prev', function(){
+          transitionPrev();
+          sendCurrentNotes(socket);
+        })
+
+        socket.on('request-notes', function(){
+          sendCurrentNotes(socket);
+        })
+      })
+
+      function getSemiRandID(length){
+        var scope = '2346789ABCDEFGHJKLMNPQRSTUVWXYZ'; //Omitting some of the tricker pairs (1/I) etc
+
+        var result = '#';
+        for(var i = length; i > 0; --i)
+          result += scope[Math.floor(Math.random() * scope.length)];
+        return result;
+      }
+
+      function transitionNext(){
+        current = document.getElementById(selectedId);
+      	if(current.nextElementSibling != null){
+          console.log('Transitioning to next');
+          current.removeAttribute('id');
+          current.nextElementSibling.id = selectedId;
+      	}else{
+      		console.log('Returning to beginning');
+      		var all = document.getElementById(containerId).getElementsByClassName('slide-container');
+      		var first = document.getElementById(containerId).firstElementChild;
+          current.removeAttribute('id');
+      		first.id = selectedId;
+      	}
+      }
+
+      function transitionPrev(){
+        current = document.getElementById(selectedId);
+      	if(current.previousElementSibling != null){
+          console.log('Transitioning to prev');
+          current.removeAttribute('id');
+          current.previousElementSibling.id = selectedId;
+      	}else{
+      		console.log('Jumping to end');
+      		var all = document.getElementById(containerId).getElementsByClassName('slide-container');
+      		var last = document.getElementById(containerId).lastElementChild;
+          current.removeAttribute('id');
+      		last.id = selectedId;
+      	}
+      }
+
+      function sendCurrentNotes(socket){
+        if($('#' + selectedId + ' span.notes').length)
+          socket.emit('update-notes', {id: window.location.hash, notes: $('#' + selectedId + ' span.notes').html()})
+        else
+          socket.emit('update-notes', {id: window.location.hash, notes: 'No notes available'})
+      }
+
+    </script>
+  </body>
+</html>
