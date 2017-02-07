@@ -6,7 +6,6 @@ var io = require('socket.io')(http);
 var presentations = {};
 
 app.get('/', function(req, res){
-  console.log(" sending index file");
   res.sendFile(__dirname + '/index.html');
 });
 
