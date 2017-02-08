@@ -1,0 +1,35 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Slyde Client List</title><style>@import url('https://fonts.googleapis.com/css?family=Cabin:700,700i|Raleway:400,600,400i');
+h1{
+  font-family: 'Cabin', serif;
+}
+p{
+  font-family: 'Raleway', sans-serif;
+}
+a{
+  color: #47e447;
+  font-weight: 600;
+}
+#frame{
+  max-width:1000px;
+  margin-left:auto;
+  margin-right:auto;
+}</style></head>
+<body><div id="frame"><h1>All Presenters</h1><div id="presenterList"><p>Loading . . .</p></div></div><script src="/socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script><script>$(document).ready(function(){
+  var socket = io();
+
+  socket.on('list', function(presentations){
+    console.log(presentations);
+    $('#presenterList').empty();
+    for(presenter of presentations){
+      $('#presenterList').append('<p><a href="/remote' + presenter.key + '">' + presenter.key + '</a></p>');
+    }
+  })
+
+  socket.emit('get-list');
+})</script>

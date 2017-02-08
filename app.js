@@ -1,6 +1,7 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var pug = require('pug');
 
 //All the possible open pages
 var presentations = {};
@@ -12,6 +13,14 @@ app.get('/', function(req, res){
 app.get('/remote', function(req,res){
   res.sendFile(__dirname + '/remote.html');
 })
+
+app.get('/list', function(req,res){
+  res.sendFile(__dirname + '/presentation-list.html');
+})
+
+function getList(){
+  return Object.keys(presentations).map(function(a){return {key: a, notes: presentations[a].notes};});
+}
 
 io.on('connection', function(socket){
   //Ask new connections to register
@@ -28,6 +37,7 @@ io.on('connection', function(socket){
          }
       }
     }
+    socket.emit('list', getList());
   })
 
   //Presentation page events
@@ -37,6 +47,7 @@ io.on('connection', function(socket){
     presentations[id] = {socket: socket, notes: null};
     console.log('Registering page: ' + id);
     socket.emit('registered', id);
+    socket.broadcast.emit('list', getList());
   });
 
   socket.on('update-notes', function(data){
@@ -70,6 +81,11 @@ io.on('connection', function(socket){
       presentations[id].socket.emit('move-prev');
     else
       socket.emit('retry');
+  })
+
+  //List page events
+  socket.on('get-list', function(){
+    socket.emit('list', getList());
   })
 });
 
