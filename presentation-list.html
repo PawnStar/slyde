@@ -26,9 +26,13 @@ a{
   socket.on('list', function(presentations){
     console.log(presentations);
     $('#presenterList').empty();
+    var hasPresenters = false;
     for(presenter of presentations){
       $('#presenterList').append('<p><a href="/remote' + presenter.key + '">' + presenter.key + '</a></p>');
+      hasPresenters = true;
     }
+    if(!hasPresenters)
+      $('#presenterList').append('<p>No one is presenting right now.</p>');
   })
 
   socket.emit('get-list');
