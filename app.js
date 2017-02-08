@@ -89,7 +89,7 @@ io.on('connection', function(socket){
   })
 });
 
-var port = (process.env.PORT || 3000);
+var port = (process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000);
 
 http.listen(port, function(){
   console.log('listening on *:'+port);
