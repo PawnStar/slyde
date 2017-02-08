@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Slyde Remote</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Cabin:700,700i|Raleway:400,600,400i');
+      #warning{
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        padding:7px;
+        background: #ff5b5b;
+        text-align: center;
+        box-shadow: 1px 1px 5px #5c0000;
+      }
+      #notes{
+        font-family: 'Raleway', sans-serif;
+        min-height:400px;
+        display:block;
+        width:100%;
+        background:white;
+      }
+      h1,h2,h3{
+        font-family: 'Cabin', serif;
+      }
+      #controls{
+        position:fixed;
+        top:50%;
+        left:0;
+        right:0;
+        display:block;
+        background:gray;
+        text-align:center;
+        opacity:.5;
+      }
+      #controls a{
+        display:inline-block;
+        background:#e7e7e7;
+        padding:5px;
+        margin:10px;
+        border-radius:2px;
+        width:60px;
+        height:60px;
+        color:transparent;
+        text-decoration:none;
+        position:relative;
+        box-shadow: 0px 5px 5px black;
+      }
+      #next::before{
+        content:'';
+        border-top: solid 5px black;
+        border-right:solid 5px black;
+        position:absolute;
+        top:25%;
+        left:15%;
+        width:40%;
+        height:40%;
+        transform:rotate(45deg);
+      }
+      #prev::before{
+        content:'';
+        border-top: solid 5px black;
+        border-left:solid 5px black;
+        position:absolute;
+        top:25%;
+        right:15%;
+        width:40%;
+        height:40%;
+        transform:rotate(-45deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="notes">
+    </div>
+    <div id="controls">
+      <a href="#" id="prev">Previous</a>
+      <a href="#" id="next">Next</a>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      $(document).ready(function(){
+        var socket = io();
+        var page = null;
+        var polling = null;
+        var notesHandler = null;
+        if(window.location.hash)
+          page = window.location.hash;
+
+        //Socket stuff
+        socket.on('connect', function() {
+           console.log("connected");
+        });
+
+        socket.on('disconnect', function () {
+            console.log("disconnected");
+        });
+
+        socket.on('disconnect', function(){
+          console.log('disconnected')
+          $('#notes').prepend('<div id="warning">Connection lost . . . reconnecting.</div>');
+        })
+
+        socket.on('connect', function(){
+          if($('#warning').length)
+            $('#warning').remove();
+        })
+
+        socket.on('register', function(){
+          //Server wants to know where to connect us to
+          if(page)
+            socket.emit('register-control', page);
+          else
+            socket.emit('register-control', page = window.prompt('Which page do you want to control?'));
+        })
+
+        socket.on('success-control', function(status){
+          console.log('successfully controlling');
+          notesHandler = function(notes){
+            $('#notes').html(notes);
+          }
+          window.location.hash = page = status.id;
+          socket.on('status-' + page, notesHandler);
+        })
+
+        socket.on('retry', function(){
+          socket.removeListener('status-' + page, notesHandler);
+          setTimeout(function(){socket.emit('register-control', page = window.prompt('Which page do you want to control?', page));},3000);
+        })
+
+        //Buttons
+        $('#prev').click(function(ev){
+          ev.preventDefault();
+          socket.emit('control-prev', page);
+        })
+
+        $('#next').click(function(ev){
+          ev.preventDefault();
+          socket.emit('control-next', page);
+        })
+      })
+    </script>
+  </body>
+</html>
