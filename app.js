@@ -88,8 +88,9 @@ io.on('connection', function(socket){
   })
 });
 
-var port = (process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000);
+var port = (process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
+var hostname = (process.env.HOST || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
 
-http.listen(port, function(){
+http.listen(port, hostname, function(){
   console.log('listening on *:'+port);
 });
