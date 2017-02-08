@@ -13,7 +13,6 @@ app.get('/remote', function(req,res){
   res.sendFile(__dirname + '/remote.html');
 })
 
-<<<<<<< HEAD
 app.get('/list', function(req,res){
   res.sendFile(__dirname + '/presentation-list.html');
 })
@@ -22,8 +21,6 @@ function getList(){
   return Object.keys(presentations).map(function(a){return {key: a, notes: presentations[a].notes};});
 }
 
-=======
->>>>>>> cfb29703bf060be43aa63e6cd9bd7b9b17f50713
 io.on('connection', function(socket){
   //Ask new connections to register
   console.log('Asking connection to register');
@@ -39,10 +36,7 @@ io.on('connection', function(socket){
          }
       }
     }
-<<<<<<< HEAD
     socket.emit('list', getList());
-=======
->>>>>>> cfb29703bf060be43aa63e6cd9bd7b9b17f50713
   })
 
   //Presentation page events
@@ -52,10 +46,7 @@ io.on('connection', function(socket){
     presentations[id] = {socket: socket, notes: null};
     console.log('Registering page: ' + id);
     socket.emit('registered', id);
-<<<<<<< HEAD
     socket.broadcast.emit('list', getList());
-=======
->>>>>>> cfb29703bf060be43aa63e6cd9bd7b9b17f50713
   });
 
   socket.on('update-notes', function(data){
