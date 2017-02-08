@@ -90,7 +90,6 @@ io.on('connection', function(socket){
     else
       socket.emit('retry');
   })
-<<<<<<< HEAD
 
   //List page events
   socket.on('get-list', function(){
@@ -99,11 +98,6 @@ io.on('connection', function(socket){
 });
 
 var port = (process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000);
-=======
-});
-
-var port = (process.env.PORT || 3000);
->>>>>>> cfb29703bf060be43aa63e6cd9bd7b9b17f50713
 
 http.listen(port, function(){
   console.log('listening on *:'+port);
