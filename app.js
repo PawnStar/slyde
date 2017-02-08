@@ -41,7 +41,7 @@ io.on('connection', function(socket){
 
   //Presentation page events
   socket.on('register', function(id){
-    if(presentations[id] && presentations[i].socket != socket)
+    if(presentations[id] && presentations[id].socket != socket)
       return socket.emit('re-register');
     presentations[id] = {socket: socket, notes: null};
     console.log('Registering page: ' + id);
